@@ -1,7 +1,7 @@
 import { ACTIONS } from "../../reducers/actions";
-
+import { Dispatch } from "react";
 interface TopbarProps {
-    tableDispatch: any;
+    tableDispatch: Dispatch<any>;
 }
 const Topbar = ({ tableDispatch }: TopbarProps) => {
     const handleCreateTable = (e: any) => {

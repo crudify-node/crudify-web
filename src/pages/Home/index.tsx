@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import { useReducer, useState } from "react";
 import Topbar from "../../components/Topbar";
 import Sidemenu from "../../components/Sidemenu";
 import Canvas from "../../components/Canvas";
@@ -6,7 +6,7 @@ import "./styles/index.css";
 import { tableReducer } from "../../reducers/tableReducer";
 import { TableData } from "../../types/Table";
 function Home() {
-    const [selectedItem, setSelectedItem] = useState();
+    const [selectedItem, setSelectedItem] = useState(0);
     const [tables, tableDispatch] = useReducer(
         tableReducer,
         [] as Array<TableData>
@@ -18,9 +18,12 @@ function Home() {
             <Sidemenu
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
+                tables={tables}
+                tableDispatch={tableDispatch}
             />
             <Canvas
                 tables={tables}
+                tableDispatch={tableDispatch}
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
             />
