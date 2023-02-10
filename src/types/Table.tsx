@@ -1,8 +1,13 @@
+import { ColumnData } from "./Column"
+
 export interface TableData{
     id:number
-    xCoordinate:number,
-    yCoordinate:number,
+    startX:number,
+    startY:number,
+    endX:number,
+    endY:number,
     data:{
-        name:string
+        name:string,
+        column:Array<ColumnData>
     }
 }

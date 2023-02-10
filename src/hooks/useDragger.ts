@@ -1,29 +1,32 @@
-import React, { useEffect, useRef } from "react";
+import { Dispatch, useEffect, useRef } from "react";
+import { ACTIONS } from "../reducers/actions";
+import { TableData } from "../types/Table";
 
-function useDragger(id: string): void {
+function useDragger(table:TableData,tableDispatch:Dispatch<any>): void {
 
   const isClicked = useRef<boolean>(false);
-
+  const id=table.id.toString();
   const coords = useRef<{
     startX: number,
     startY: number,
     lastX: number,
     lastY: number
   }>({
-    startX: 0,
-    startY: 0,
-    lastX: 0,
-    lastY: 0
+    startX: table.startX,
+    startY: table.startY,
+    lastX: table.endX,
+    lastY: table.endY
   })
 
   useEffect(() => {
-
     const target = document.getElementById(id);
     if (!target) throw new Error("Element with given id doesn't exist");
-
+    
     const container = target.parentElement;
     if (!container) throw new Error("target element must have a parent");
-
+    
+    target.style.top=table.endY.toString()+"px"
+    target.style.left=table.endX.toString()+"px"
 
 
     const onMouseDown = (e: MouseEvent) => {
@@ -36,6 +39,11 @@ function useDragger(id: string): void {
       isClicked.current = false;
       coords.current.lastX = target.offsetLeft;
       coords.current.lastY = target.offsetTop;
+      table.startX=coords.current.startX;
+      table.startY=coords.current.startY;
+      table.endX=coords.current.lastX;
+      table.endY=coords.current.lastY;
+      tableDispatch({type:ACTIONS.EDIT_TABLE,payload:table})
     }
 
     const onMouseMove = (e: MouseEvent) => {
@@ -51,7 +59,7 @@ function useDragger(id: string): void {
     target.addEventListener('mousedown', onMouseDown);
     target.addEventListener('mouseup', onMouseUp);
     container.addEventListener('mousemove', onMouseMove);
-    container.addEventListener('mouseleave', onMouseUp);
+    // container.addEventListener('mouseleave', onMouseUp);
 
     const cleanup = () => {
       target.removeEventListener('mousedown', onMouseDown);
