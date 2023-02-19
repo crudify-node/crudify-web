@@ -11,5 +11,6 @@ export const ACTIONS={
     SET_RELATION:"set-relation",
     // Column
     DELETE_COLUMN:"delete-column",
-    EDIT_COLUMN:"edit-column"
+    EDIT_COLUMN:"edit-column",
+    READ_RELATIONS_BY_COLUMN:"read-relations-by-column-id"
 }

@@ -3,14 +3,26 @@ import useDragger from "../../hooks/useDragger";
 import addColumn from "../../assets/images/addColumn.svg";
 import deleteIcon from "../../assets/images/delete.svg";
 import { ACTIONS } from "../../reducers/actions";
-import { ColumnData } from "../../types/Column";
-import { TableData } from "../../types/Table";
+import { ColumnData } from "../../Constants/Column";
+import { TableData } from "../../Constants/Table";
 import Column from "./Column";
+import { RelationData } from "../../Constants/Relation";
+import { useDrag, useDrop } from "react-dnd";
+import { ItemTypes } from "../../Constants/ItemTypes";
 interface TableProps {
     data: TableData;
     tableDispatch: Dispatch<any>;
+    relations:Array<RelationData>
 }
-const Table = ({ data, tableDispatch }: TableProps) => {
+const Table = ({ data, tableDispatch,relations }: TableProps) => {
+    // const [{ isDragging }, drag] = useDrag(() => ({
+    //     type: ItemTypes.TABLE,
+    //     item:{id:data.id},
+    //     collect: (monitor) => ({
+    //         isDragging: !!monitor.isDragging(),
+    //     }),
+    // }));
+    
     useDragger(data, tableDispatch);
     const handleCreateColumn = (e: any) => {
         e.preventDefault();
@@ -32,7 +44,10 @@ const Table = ({ data, tableDispatch }: TableProps) => {
     return (
         <div
             id={data.id.toString()}
-            className="flex items-center justify-center absolute min-h-[50px] border-2 border-white border-solid z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            className="flex items-center justify-center absolute min-h-[50px] z-100 border-2 border-white border-solid mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+            // ref={drag}
+            // style={{border:isDragging?"5px solid pink":"0px", top:data.startY,left:data.startX}}
+
         >
             <div className="flex flex-col w-full">
                 <div className="px-4 w-full flex justify-between bg-[#3b3b6b]">
@@ -80,7 +95,7 @@ const Table = ({ data, tableDispatch }: TableProps) => {
                 <div className="flex flex-col">
                     {data.data.column.map((column) => {
                         return (
-                            <Column key={column.id} column={column} tableDispatch={tableDispatch}/>
+                            <Column key={column.id} column={column} tableDispatch={tableDispatch} relations={relations}/>
                         );
                     })}
                 </div>

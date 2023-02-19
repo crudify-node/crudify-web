@@ -5,9 +5,11 @@ import Canvas from "../../components/Canvas";
 import "./styles/index.css";
 import { tableReducer } from "../../reducers/tableReducer";
 import { relationReducer } from "../../reducers/relationshipReducer";
-import { TableData } from "../../types/Table";
+import { TableData } from "../../Constants/Table";
 import { ACTIONS } from "../../reducers/actions";
-import { RelationData } from "../../types/Relation";
+import { RelationData } from "../../Constants/Relation";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 function Home() {
     const [selectedItem, setSelectedItem] = useState(0);
     const [tables, tableDispatch] = useReducer(
@@ -30,31 +32,43 @@ function Home() {
                 payload: { data: initTableData["data"] },
             });
         }
+        const initialRelationData = JSON.parse(
+            localStorage.getItem("relationData") || "{}"
+        );
+        if (initialRelationData["data"]) {
+            relationDispatch({
+                type: ACTIONS.SET_RELATION,
+                payload: { data: initialRelationData["data"] },
+            });
+        }
     }, []);
     useEffect(() => {
         console.log(tables);
     }, [tables]);
     return (
-        <div className=" main min-h-screen text-white">
-            <Topbar
-                relations={relations}
-                relationDispatch={relationDispatch}
-                tableDispatch={tableDispatch}
-                tables={tables}
-            />
-            {/* <Sidemenu
+        <DndProvider backend={HTML5Backend}>
+            <div className=" main min-h-screen text-white">
+                <Topbar
+                    relations={relations}
+                    relationDispatch={relationDispatch}
+                    tableDispatch={tableDispatch}
+                    tables={tables}
+                />
+                {/* <Sidemenu
                 selectedItem={selectedItem}
                 setSelectedItem={setSelectedItem}
                 tables={tables}
                 tableDispatch={tableDispatch}
             /> */}
-            <Canvas
-                tables={tables}
-                tableDispatch={tableDispatch}
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-            />
-        </div>
+                <Canvas
+                    relations={relations}
+                    tables={tables}
+                    tableDispatch={tableDispatch}
+                    selectedItem={selectedItem}
+                    setSelectedItem={setSelectedItem}
+                />
+            </div>
+        </DndProvider>
     );
 }
 

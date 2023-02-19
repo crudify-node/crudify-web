@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { TableData } from "../../types/Table";
+import { TableData } from "../../Constants/Table";
 interface SidemenuProps {
     tables: Array<TableData>;
     tableDispatch: Dispatch<any>;

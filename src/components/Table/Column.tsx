@@ -1,14 +1,20 @@
-import { ColumnData } from "../../types/Column";
+import { ColumnData } from "../../Constants/Column";
 import deleteIcon from "../../assets/images/delete.svg";
+import infoIcon from "../../assets/images/infoIcon.svg";
 import { datatype } from "../../enums/datatypes";
-import { Dispatch } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { ACTIONS } from "../../reducers/actions";
+import { findRelationsByColumnId } from "../../utils/relation";
+import { RelationData } from "../../Constants/Relation";
 
 interface ColumnProps {
     column: ColumnData;
+    relations: Array<RelationData>;
     tableDispatch: Dispatch<any>;
 }
-const Column = ({ column, tableDispatch }: ColumnProps) => {
+const Column = ({ column, tableDispatch, relations }: ColumnProps) => {
+    const [isInfoClicked, setIsInfoClicked] = useState(false);
+    const [relationData, setRelationData] = useState<Array<RelationData>>([]);
     const handleDeleteColumn = (e: any) => {
         e.preventDefault();
         tableDispatch({ type: ACTIONS.DELETE_COLUMN, payload: column });
@@ -16,9 +22,17 @@ const Column = ({ column, tableDispatch }: ColumnProps) => {
     const handleEditColumn = (column: ColumnData) => {
         tableDispatch({ type: ACTIONS.EDIT_COLUMN, payload: column });
     };
+    const handleViewRelation = (e: any) => {
+        setIsInfoClicked(!isInfoClicked);
+        setRelationData(findRelationsByColumnId(relations, column.id));
+    };
+    useEffect(() => {
+        console.log({relations})
+        console.log(relationData);
+    }, [relationData]);
     return (
         <div>
-            <div className="py-1" role="none">
+            <div className="py-1 relative" role="none">
                 <div className=" text-gray-100 px-4 py-2 text-sm flex justify-between">
                     <div className="flex justify-between">
                         <input
@@ -47,7 +61,11 @@ const Column = ({ column, tableDispatch }: ColumnProps) => {
                             >
                                 {Object.keys(datatype).map((key) => {
                                     return (
-                                        <option key={key} value={key} selected={key===column.data.type}>
+                                        <option
+                                            key={key}
+                                            value={key}
+                                            selected={key === column.data.type}
+                                        >
                                             {key}
                                         </option>
                                     );
@@ -55,18 +73,46 @@ const Column = ({ column, tableDispatch }: ColumnProps) => {
                             </select>
                         </div>
                     </div>
-                    <label
-                        htmlFor=""
-                        title="Create Table"
-                        className="labelInput rounded"
-                        onClick={handleDeleteColumn}
-                    >
-                        <input type="text" className="inp-invisible" />
-                        <div className="iconToolbar text-white">
-                            <img src={deleteIcon} alt="" className="h-3 w-3 " />
-                        </div>
-                    </label>
+                    <div className="flex">
+                        <label
+                            htmlFor=""
+                            title="Delete Column"
+                            className="labelInput rounded"
+                            onClick={handleDeleteColumn}
+                        >
+                            <input type="text" className="inp-invisible" />
+                            <div className="iconToolbar text-white">
+                                <img
+                                    src={deleteIcon}
+                                    alt=""
+                                    className="h-3 w-3 "
+                                />
+                            </div>
+                        </label>
+                        <label
+                            htmlFor=""
+                            title="Information about Relation"
+                            className="labelInput rounded"
+                            onClick={handleViewRelation}
+                        >
+                            <input type="text" className="inp-invisible" />
+                            <div className="iconToolbar text-white">
+                                <img
+                                    src={infoIcon}
+                                    alt=""
+                                    className="h-3 w-3 "
+                                />
+                            </div>
+                        </label>
+                    </div>
                 </div>
+                {isInfoClicked && (
+                    <div className="absolute right-[-294px] top-0 bg-white min-h-[100px] min-w-[100px]">
+                        {relationData.map((relation)=>{
+                            return <div className="text-black" key={relation.id}>{relation.data.type} with column: {relation.targetColumnId}</div>
+                        })}
+                    </div>
+                )}
             </div>
         </div>
     );

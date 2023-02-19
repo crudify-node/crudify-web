@@ -1,4 +1,4 @@
-import { RelationData } from "../types/Relation";
+import { RelationData } from "../Constants/Relation";
 import { newRelation } from "../utils/relation";
 import { ACTIONS } from "./actions";
 

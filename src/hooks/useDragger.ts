@@ -1,6 +1,6 @@
 import { Dispatch, useEffect, useRef } from "react";
 import { ACTIONS } from "../reducers/actions";
-import { TableData } from "../types/Table";
+import { TableData } from "../Constants/Table";
 
 function useDragger(table:TableData,tableDispatch:Dispatch<any>): void {
 

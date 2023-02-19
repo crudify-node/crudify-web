@@ -1,4 +1,4 @@
-import { TableData } from "../types/Table";
+import { TableData } from "../Constants/Table";
 import { newTable } from "../utils/table";
 import { ACTIONS } from "./actions";
 
