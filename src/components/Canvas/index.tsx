@@ -3,9 +3,9 @@ import { TableData } from "../../Constants/Table";
 import Table from "../Table";
 import createRelation from "../../assets/images/convertToCode.svg";
 import { RelationData } from "../../Constants/Relation";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { ItemTypes } from "../../Constants/ItemTypes";
+import { convertToCode } from "../../utils/convertToCode";
+import { CRUDIFY_DATA } from "../../Constants/CrudifyData";
+import { convertToCodeFromCrudifyData } from "../../services/convertToCode/convertToCode.service";
 interface CanvasProps {
     tables: Array<TableData>;
     tableDispatch: Dispatch<any>;
@@ -13,24 +13,11 @@ interface CanvasProps {
     selectedItem: number;
     relations: Array<RelationData>;
 }
-function Canvas({
-    tables,
-    tableDispatch,
-    selectedItem,
-    setSelectedItem,
-    relations,
-}: CanvasProps) {
-    // const [{ position }, drop] = useDrop(() => ({
-    //     accept: ItemTypes.TABLE,
-    //     drop: (item) => {
-    //         console.log(position,item)
-    //     },
-    //     collect: monitor => {
-    //         return {
-    //             position:monitor.getInitialSourceClientOffset()
-    //         }
-    //     },
-    //   }))
+function Canvas({ tables, tableDispatch, relations }: CanvasProps) {
+    const handleConvertToCode = (e: any) => {
+        const data: CRUDIFY_DATA = convertToCode(tables, relations);
+        convertToCodeFromCrudifyData(data)
+    };
     return (
         <div
             className="min-w-screen min-h-screen"
@@ -46,12 +33,14 @@ function Canvas({
                     ></Table>
                 );
             })}
-            <div className="absolute bottom-[10px] right-[10px]">
+            <div
+                className="absolute bottom-[10px] right-[10px]"
+                onClick={handleConvertToCode}
+            >
                 <label
                     htmlFor=""
                     title="Convert to code!"
                     className="labelInput rounded "
-                    // onClick={handleCreateTable}
                 >
                     <input type="text" className="inp-invisible h-0 w-0" />
                     <div className="iconToolbar text-white rounded bg-[#6562b9] hover:bg-[#4F4D80]">

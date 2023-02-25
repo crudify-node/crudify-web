@@ -26,7 +26,6 @@ function Home() {
         );
         console.log(initTableData);
         if (initTableData["data"]) {
-            console.log("hilo");
             tableDispatch({
                 type: ACTIONS.SET_DATA,
                 payload: { data: initTableData["data"] },
