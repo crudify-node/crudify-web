@@ -6,7 +6,8 @@ import {
 } from "../Constants/CrudifyData";
 import { RelationData } from "../Constants/Relation";
 import { TableData } from "../Constants/Table";
-import { findRelationsByColumnId } from "./relation";
+import { findRelationsByColumnId, findTableDataByColumnId } from "./relation";
+import { findColumnByColumnId } from "./table";
 
 const getStaticFields = (
     TableData: TableData
@@ -22,6 +23,7 @@ const getStaticFields = (
 };
 
 const getRelationalField = (
+    tables:Array<TableData>,
     TableData: TableData,
     RelationsData: Array<RelationData>
 ): Array<CRUDIFY_RELATIONAL_ATTRIBUTE> => {
@@ -34,8 +36,8 @@ const getRelationalField = (
                 );
                 return relations.map((relation) => {
                     return {
-                        connection: relation.data.type,
-                        foriegnKeyName: relation.targetColumnId.toString(),
+                        connection: findTableDataByColumnId(column,tables).data.name,
+                        foriegnKeyName: findColumnByColumnId(tables,relation.targetColumnId).data.name,
                         type: relation.data.type,
                     };
                 });
@@ -54,7 +56,7 @@ export const convertToCode = (
             name: table.data.name,
             attributes: {
                 StaticFields: getStaticFields(table),
-                RelationalFields: getRelationalField(table, RelationsData),
+                RelationalFields: getRelationalField(TableData,table, RelationsData),
             },
         };
         crudifyModels.push(crudifyModel);
