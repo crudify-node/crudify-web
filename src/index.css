@@ -2,22 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.inp-invisible{
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
+.inp-invisible {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
 }
-.iconToolbar{
-    height:2.5rem;
-    width:2.5rem;
-    display:flex;
-    justify-content: center;
-    align-items: center;
+.iconToolbar {
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-.labelInput{
-    cursor:pointer;
+.labelInput {
+  cursor: pointer;
 }
-.labelInput:hover{
-    background:#3a4a4a
+.labelInput:hover {
+  background: #3a4a4a;
 }

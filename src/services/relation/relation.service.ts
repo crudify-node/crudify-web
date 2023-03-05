@@ -1,3 +1,1 @@
-export const getRelations=async ()=>{
-    
-}
+export const getRelations = async (): Promise<any> => {};
