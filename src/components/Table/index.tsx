@@ -41,6 +41,9 @@ const Table = ({ data, tableDispatch,relations }: TableProps) => {
         e.preventDefault();
         tableDispatch({ type: ACTIONS.DELETE_TABLE, payload: data });
     };
+    const handleEditTable=(data:TableData)=>{
+        tableDispatch({type: ACTIONS.EDIT_TABLE, payload: data})
+    }
     return (
         <div
             id={data.id.toString()}
@@ -58,6 +61,11 @@ const Table = ({ data, tableDispatch,relations }: TableProps) => {
                         style={{ background: "none" }}
                         className="max-w-min w-[50px]"
                         defaultValue={data.data.name}
+                        onChange={(e) => {
+                            e.preventDefault();
+                            data.data.name = e.target.value;
+                            handleEditTable(data);
+                        }}
                     />
                     <div className="flex justify-center items-center">
                         <label
