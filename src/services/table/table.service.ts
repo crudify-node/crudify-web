@@ -1,3 +1,1 @@
-export const getTable=async ()=>{
-    
-}
+export const getTable = async (): Promise<any> => {};

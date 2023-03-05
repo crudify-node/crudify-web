@@ -1,3 +1,1 @@
-export const getDiagram=async ()=>{
-    
-}
+export const getDiagram = async (): Promise<any> => {};
