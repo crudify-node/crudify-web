@@ -8,6 +8,7 @@ import { type TableData } from "../../Constants/Table";
 import Column from "./Column";
 import { type RelationData } from "../../Constants/Relation";
 import React from "react";
+import { datatype } from "../../enums/datatypes";
 interface TableProps {
   data: TableData;
   tableDispatch: Dispatch<any>;
@@ -22,7 +23,7 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
       tableId: data.id,
       data: {
         name: "test",
-        type: "string"
+        type: datatype.STRING
       }
     };
     data.data.column.push(column);
