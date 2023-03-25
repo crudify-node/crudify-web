@@ -28,7 +28,7 @@ const Column = ({
   };
   const handleViewRelation = (e: any): void => {
     setIsInfoClicked(!isInfoClicked);
-    setRelationData(findRelationsByColumnId(relations, column.id));
+    setRelationData(findRelationsByColumnId(relations, column));
   };
   useEffect(() => {
     console.log({ relations });
@@ -68,7 +68,10 @@ const Column = ({
                     <option
                       key={key}
                       value={key}
-                      selected={key === column.data.type}
+                      selected={
+                        datatype[key] ===
+                        datatype[column.data.type.toUpperCase()]
+                      }
                     >
                       {key}
                     </option>

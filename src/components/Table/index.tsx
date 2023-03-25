@@ -1,4 +1,4 @@
-import React, { type Dispatch } from "react";
+import { type Dispatch } from "react";
 import useDragger from "../../hooks/useDragger";
 import addColumn from "../../assets/images/addColumn.svg";
 import deleteIcon from "../../assets/images/delete.svg";
@@ -7,20 +7,14 @@ import { type ColumnData } from "../../Constants/Column";
 import { type TableData } from "../../Constants/Table";
 import Column from "./Column";
 import { type RelationData } from "../../Constants/Relation";
+import React from "react";
+import { datatype } from "../../enums/datatypes";
 interface TableProps {
   data: TableData;
   tableDispatch: Dispatch<any>;
   relations: RelationData[];
 }
 const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
-  // const [{ isDragging }, drag] = useDrag(() => ({
-  //     type: ItemTypes.TABLE,
-  //     item:{id:data.id},
-  //     collect: (monitor) => ({
-  //         isDragging: !!monitor.isDragging(),
-  //     }),
-  // }));
-
   useDragger(data, tableDispatch);
   const handleCreateColumn = (e: any): void => {
     e.preventDefault();
@@ -29,7 +23,7 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
       tableId: data.id,
       data: {
         name: "test",
-        type: "string"
+        type: datatype.STRING
       }
     };
     data.data.column.push(column);
@@ -38,6 +32,9 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
   const handleDeleteTable = (e: any): void => {
     e.preventDefault();
     tableDispatch({ type: ACTIONS.DELETE_TABLE, payload: data });
+  };
+  const handleEditTable = (data: TableData): void => {
+    tableDispatch({ type: ACTIONS.EDIT_TABLE, payload: data });
   };
   return (
     <div
@@ -55,6 +52,11 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
             style={{ background: "none" }}
             className="max-w-min w-[50px]"
             defaultValue={data.data.name}
+            onChange={(e) => {
+              e.preventDefault();
+              data.data.name = e.target.value;
+              handleEditTable(data);
+            }}
           />
           <div className="flex justify-center items-center">
             <label
