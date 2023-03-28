@@ -19,7 +19,6 @@ function Home(): JSX.Element {
   );
   useEffect(() => {
     const initTableData = JSON.parse(localStorage.getItem("tableData") ?? "{}");
-    console.log(initTableData);
     if (initTableData.data !== undefined) {
       tableDispatch({
         type: ACTIONS.SET_DATA,
@@ -36,9 +35,6 @@ function Home(): JSX.Element {
       });
     }
   }, []);
-  useEffect(() => {
-    console.log(tables);
-  }, [tables]);
   return (
     <DndProvider backend={HTML5Backend}>
       <div className=" main min-h-screen text-white">

@@ -2,7 +2,7 @@ import { type ColumnData } from "../../Constants/Column";
 import deleteIcon from "../../assets/images/delete.svg";
 import infoIcon from "../../assets/images/infoIcon.svg";
 import { datatype } from "../../enums/datatypes";
-import React, { type Dispatch, useEffect, useState } from "react";
+import React, { type Dispatch, useState } from "react";
 import { ACTIONS } from "../../reducers/actions";
 import { findRelationsByColumnId } from "../../utils/relation";
 import { type RelationData } from "../../Constants/Relation";
@@ -30,12 +30,8 @@ const Column = ({
     setIsInfoClicked(!isInfoClicked);
     setRelationData(findRelationsByColumnId(relations, column));
   };
-  useEffect(() => {
-    console.log({ relations });
-    console.log(relationData);
-  }, [relationData]);
   return (
-    <div>
+    <div id={column.id.toString()}>
       <div className="py-1 relative" role="none">
         <div className=" text-gray-100 px-4 py-2 text-sm flex justify-between">
           <div className="flex justify-between">

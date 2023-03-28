@@ -1,4 +1,5 @@
 import { type ColumnData } from "../Constants/Column";
+import type { RelationData } from "../Constants/Relation";
 import { type TableData } from "../Constants/Table";
 
 export function newTable(data: TableData): TableData {
@@ -14,4 +15,18 @@ export function findColumnByColumnId(
     })
     .flat(1);
   return column[0];
+}
+export function tableRelationExists(
+  table: TableData,
+  relation: RelationData
+): boolean {
+  for (const col of table.data.column) {
+    if (
+      relation.sourceColumnId === col.id ||
+      relation.targetColumnId === col.id
+    ) {
+      return true;
+    }
+  }
+  return false;
 }

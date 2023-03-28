@@ -1,8 +1,15 @@
 import { type Dispatch, useEffect, useRef } from "react";
 import { ACTIONS } from "../reducers/actions";
 import { type TableData } from "../Constants/Table";
+import type { RelationData } from "../Constants/Relation";
+import { tableRelationExists } from "../utils/table";
+import { setRelationCoordinates } from "../utils/relation";
 
-function useDragger(table: TableData, tableDispatch: Dispatch<any>): void {
+function useDragger(
+  table: TableData,
+  tableDispatch: Dispatch<any>,
+  relations: RelationData[]
+): void {
   const isClicked = useRef<boolean>(false);
   const id = table.id.toString();
   const coords = useRef<{
@@ -26,6 +33,7 @@ function useDragger(table: TableData, tableDispatch: Dispatch<any>): void {
 
     target.style.top = table.endY.toString() + "px";
     target.style.left = table.endX.toString() + "px";
+    target.style.zIndex = "10";
 
     const onMouseDown = (e: MouseEvent): void => {
       isClicked.current = true;
@@ -42,6 +50,11 @@ function useDragger(table: TableData, tableDispatch: Dispatch<any>): void {
       table.endX = coords.current.lastX;
       table.endY = coords.current.lastY;
       tableDispatch({ type: ACTIONS.EDIT_TABLE, payload: table });
+      for (const relation of relations) {
+        if (tableRelationExists(table, relation)) {
+          setRelationCoordinates(relation);
+        }
+      }
     };
 
     const onMouseMove = (e: MouseEvent): void => {
@@ -52,6 +65,11 @@ function useDragger(table: TableData, tableDispatch: Dispatch<any>): void {
 
       target.style.top = `${nextY}px`;
       target.style.left = `${nextX}px`;
+      for (const relation of relations) {
+        if (tableRelationExists(table, relation)) {
+          setRelationCoordinates(relation);
+        }
+      }
     };
 
     target.addEventListener("mousedown", onMouseDown);

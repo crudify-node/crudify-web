@@ -15,7 +15,7 @@ interface TableProps {
   relations: RelationData[];
 }
 const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
-  useDragger(data, tableDispatch);
+  useDragger(data, tableDispatch, relations);
   const handleCreateColumn = (e: any): void => {
     e.preventDefault();
     const column: ColumnData = {
@@ -39,7 +39,7 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
   return (
     <div
       id={data.id.toString()}
-      className="flex items-center justify-center absolute min-h-[50px] z-100 border-2 border-white border-solid mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      className="flex items-center justify-center absolute min-h-[50px] z-10 border-2 border-white border-solid mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
       // ref={drag}
       // style={{border:isDragging?"5px solid pink":"0px", top:data.startY,left:data.startX}}
     >

@@ -3,7 +3,6 @@ import { BASE_URL } from "../../envs/environment";
 export const convertToCodeFromCrudifyData = async (
   data: CRUDIFY_DATA
 ): Promise<any> => {
-  console.log(data);
   await fetch(BASE_URL() + "api/crudify", {
     method: "POST",
     body: JSON.stringify(data),

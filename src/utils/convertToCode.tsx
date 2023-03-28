@@ -13,7 +13,6 @@ import { findColumnByColumnId } from "./table";
 const getStaticFields = (TableData: TableData): CRUDIFY_STATIC_ATTRIBUTE[] => {
   const crudifyStaticField: CRUDIFY_STATIC_ATTRIBUTE[] =
     TableData.data.column.map((column) => {
-      console.log(column.data.type);
       return {
         name: column.data.name,
         type: datatype[column.data.type.toUpperCase()]
