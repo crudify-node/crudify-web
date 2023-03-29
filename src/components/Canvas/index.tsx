@@ -7,6 +7,7 @@ import { type RelationData } from "../../Constants/Relation";
 import { convertToCode } from "../../utils/convertToCode";
 import { type CRUDIFY_DATA } from "../../Constants/CrudifyData";
 import { convertToCodeFromCrudifyData } from "../../services/convertToCode/convertToCode.service";
+import Relation from "../Relation/Relation";
 interface CanvasProps {
   tables: TableData[];
   tableDispatch: Dispatch<any>;
@@ -37,6 +38,9 @@ function Canvas({
             relations={relations}
           ></Table>
         );
+      })}
+      {relations.map((relation) => {
+        return <Relation relation={relation} key={relation.id} />;
       })}
       <div
         className="absolute bottom-[10px] right-[10px]"
