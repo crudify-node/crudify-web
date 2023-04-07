@@ -1,22 +1,29 @@
+/* eslint-disable multiline-ternary */
 import { ACTIONS } from "../../reducers/actions";
-import React, { type Dispatch, useState } from "react";
+import React, { type Dispatch } from "react";
 import createIcon from "../../assets/images/createIcon.svg";
 import createRelation from "../../assets/images/createRelation.svg";
+import deleteIcon from "../../assets/images/delete.svg";
 import { type RelationData } from "../../Constants/Relation";
 import { type TableData } from "../../Constants/Table";
-import CreateRelation from "../Relation/CreateRelation";
 
 interface TopbarProps {
   tableDispatch: Dispatch<any>;
   relations: RelationData[];
   relationDispatch: Dispatch<any>;
   tables: TableData[];
+  activeTable: boolean;
+  setActiveTable: Dispatch<any>;
+  activeRelation: number;
 }
 const Topbar = ({
   tableDispatch,
   tables,
   relationDispatch,
-  relations
+  relations,
+  activeTable,
+  setActiveTable,
+  activeRelation
 }: TopbarProps): JSX.Element => {
   const handleCreateTable = (e: any): void => {
     e.preventDefault();
@@ -32,39 +39,67 @@ const Topbar = ({
       }
     });
   };
-  const [showCreateDialogue, setShowDialogue] = useState(false);
   const handleCreateRelation = (e: any): void => {
     e.preventDefault();
-    setShowDialogue(!showCreateDialogue);
+    setActiveTable(!activeTable);
+  };
+  const isValidActiveRelation = (activeRelation: number): boolean => {
+    for (const relation of relations) {
+      if (relation.id === activeRelation) return true;
+    }
+    return false;
+  };
+  const handleDeleteRelation = (): void => {
+    relationDispatch({
+      type: ACTIONS.DELETE_RELATION,
+      payload: {
+        id: activeRelation
+      }
+    });
   };
   return (
-    <div className="flex items-center bg-[#262627] justify-center absolute top-5 min-h-[50px] min-w-[400px]  left-1/2 translate-x-[-50%] rounded z-10">
-      <label
-        htmlFor=""
-        title="Create Table"
-        className="labelInput rounded"
-        onClick={handleCreateTable}
-      >
-        <input type="text" className="inp-invisible" />
-        <div className="iconToolbar text-white">
-          <img src={createIcon} alt="" className="h-4 w-4 " />
+    <>
+      {!isValidActiveRelation(activeRelation) ? (
+        <div className="flex items-center bg-[#262627] justify-center absolute top-5 min-h-[50px] min-w-[400px]  left-1/2 translate-x-[-50%] rounded z-10">
+          <label
+            htmlFor=""
+            title="Create Table"
+            className="labelInput rounded"
+            onClick={handleCreateTable}
+          >
+            <input type="text" className="inp-invisible" />
+            <div className="iconToolbar text-white">
+              <img src={createIcon} alt="" className="h-4 w-4 " />
+            </div>
+          </label>
+          <label
+            htmlFor=""
+            title="Create Relation"
+            className="labelInput rounded"
+            onClick={handleCreateRelation}
+          >
+            <input type="text" className="inp-invisible" />
+            <div className="iconToolbar text-white">
+              <img src={createRelation} alt="" className="h-4 w-4 " />
+            </div>
+          </label>
         </div>
-      </label>
-      <label
-        htmlFor=""
-        title="Create Relation"
-        className="labelInput rounded"
-        onClick={handleCreateRelation}
-      >
-        <input type="text" className="inp-invisible" />
-        <div className="iconToolbar text-white">
-          <img src={createRelation} alt="" className="h-4 w-4 " />
+      ) : (
+        <div className="flex items-center bg-[#262627] justify-center absolute top-5 min-h-[50px] min-w-[400px]  left-1/2 translate-x-[-50%] rounded z-10">
+          <label
+            htmlFor=""
+            title="Delete Relation"
+            className="labelInput rounded"
+            onClick={handleDeleteRelation}
+          >
+            <input type="text" className="inp-invisible" />
+            <div className="iconToolbar text-white">
+              <img src={deleteIcon} alt="" className="h-4 w-4 " />
+            </div>
+          </label>
         </div>
-      </label>
-      {showCreateDialogue && (
-        <CreateRelation relationDispatch={relationDispatch} tables={tables} />
       )}
-    </div>
+    </>
   );
 };
 

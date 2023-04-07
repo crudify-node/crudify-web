@@ -1,24 +1,22 @@
 import { type ColumnData } from "../../Constants/Column";
 import deleteIcon from "../../assets/images/delete.svg";
-import infoIcon from "../../assets/images/infoIcon.svg";
+import addSign from "../../assets/images/addColumn.svg";
 import { datatype } from "../../enums/datatypes";
-import React, { type Dispatch, useState } from "react";
+import React, { type Dispatch } from "react";
 import { ACTIONS } from "../../reducers/actions";
-import { findRelationsByColumnId } from "../../utils/relation";
 import { type RelationData } from "../../Constants/Relation";
 
 interface ColumnProps {
   column: ColumnData;
   relations: RelationData[];
   tableDispatch: Dispatch<any>;
+  isActive: boolean;
 }
 const Column = ({
   column,
   tableDispatch,
-  relations
+  isActive
 }: ColumnProps): JSX.Element => {
-  const [isInfoClicked, setIsInfoClicked] = useState(false);
-  const [relationData, setRelationData] = useState<RelationData[]>([]);
   const handleDeleteColumn = (e: any): void => {
     e.preventDefault();
     tableDispatch({ type: ACTIONS.DELETE_COLUMN, payload: column });
@@ -26,12 +24,8 @@ const Column = ({
   const handleEditColumn = (column: ColumnData): void => {
     tableDispatch({ type: ACTIONS.EDIT_COLUMN, payload: column });
   };
-  const handleViewRelation = (e: any): void => {
-    setIsInfoClicked(!isInfoClicked);
-    setRelationData(findRelationsByColumnId(relations, column));
-  };
   return (
-    <div id={column.id.toString()}>
+    <div id={column.id.toString()} className="z-10 bg-black">
       <div className="py-1 relative" role="none">
         <div className=" text-gray-100 px-4 py-2 text-sm flex justify-between">
           <div className="flex justify-between">
@@ -88,30 +82,20 @@ const Column = ({
                 <img src={deleteIcon} alt="" className="h-3 w-3 " />
               </div>
             </label>
-            <label
-              htmlFor=""
-              title="Information about Relation"
-              className="labelInput rounded"
-              onClick={handleViewRelation}
-            >
-              <input type="text" className="inp-invisible" />
-              <div className="iconToolbar text-white">
-                <img src={infoIcon} alt="" className="h-3 w-3 " />
-              </div>
-            </label>
+            {isActive && (
+              <label
+                htmlFor=""
+                title="This would be the source column"
+                className="labelInput rounded"
+              >
+                <input type="text" className="inp-invisible" />
+                <div className="iconToolbar text-white">
+                  <img src={addSign} alt="" className="h-3 w-3 " />
+                </div>
+              </label>
+            )}
           </div>
         </div>
-        {isInfoClicked && (
-          <div className="absolute right-[-294px] top-0 bg-white min-h-[100px] min-w-[100px]">
-            {relationData.map((relation) => {
-              return (
-                <div className="text-black" key={relation.id}>
-                  {relation.data.type} with column: {relation.targetColumnId}
-                </div>
-              );
-            })}
-          </div>
-        )}
       </div>
     </div>
   );

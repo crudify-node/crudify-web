@@ -14,16 +14,23 @@ interface CanvasProps {
   setSelectedItem: Dispatch<SetStateAction<number>>;
   selectedItem: number;
   relations: RelationData[];
+  activeTable: boolean;
+  activeRelation: number;
+  setActiveRelation: Dispatch<any>;
 }
 function Canvas({
   tables,
   tableDispatch,
-  relations
+  relations,
+  activeTable,
+  activeRelation,
+  setActiveRelation
 }: CanvasProps): JSX.Element {
   const handleConvertToCode = async (e: any): Promise<void> => {
     const data: CRUDIFY_DATA = convertToCode(tables, relations);
     await convertToCodeFromCrudifyData(data);
   };
+
   return (
     <div
       className="min-w-screen min-h-screen"
@@ -36,12 +43,30 @@ function Canvas({
             key={table.id}
             tableDispatch={tableDispatch}
             relations={relations}
+            isActive={activeTable}
           ></Table>
         );
       })}
-      {relations.map((relation) => {
-        return <Relation relation={relation} key={relation.id} />;
-      })}
+
+      <svg
+        style={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          zIndex: "0"
+        }}
+      >
+        {relations.map((relation) => {
+          return (
+            <Relation
+              activeRelation={activeRelation}
+              setActiveRelation={setActiveRelation}
+              relation={relation}
+              key={relation.id}
+            />
+          );
+        })}
+      </svg>
       <div
         className="absolute bottom-[10px] right-[10px]"
         onClick={handleConvertToCode}

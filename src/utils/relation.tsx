@@ -53,6 +53,14 @@ export function setRelationCoordinates(relation: RelationData): void {
           " " +
           coordinates.sourceY.toString() +
           "," +
+          ((coordinates.sourceX + coordinates.targetX) / 2).toString() +
+          " " +
+          coordinates.sourceY.toString() +
+          "," +
+          ((coordinates.sourceX + coordinates.targetX) / 2).toString() +
+          " " +
+          coordinates.targetY.toString() +
+          "," +
           coordinates.targetX.toString() +
           " " +
           coordinates.targetY.toString()

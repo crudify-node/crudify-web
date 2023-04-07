@@ -17,6 +17,8 @@ function Home(): JSX.Element {
     relationReducer,
     [] as RelationData[]
   );
+  const [activeTable, setActiveTable] = useState(false);
+  const [activeRelation, setActiveRelation] = useState(0);
   useEffect(() => {
     const initTableData = JSON.parse(localStorage.getItem("tableData") ?? "{}");
     if (initTableData.data !== undefined) {
@@ -34,6 +36,15 @@ function Home(): JSX.Element {
         payload: { data: initialRelationData.data }
       });
     }
+    document.addEventListener(
+      "click",
+      function (e) {
+        const cursor = (e.target as HTMLBodyElement)?.style.cursor;
+        console.log(cursor);
+        if (cursor === "") setActiveRelation(0);
+      },
+      false
+    );
   }, []);
   return (
     <DndProvider backend={HTML5Backend}>
@@ -43,19 +54,19 @@ function Home(): JSX.Element {
           relationDispatch={relationDispatch}
           tableDispatch={tableDispatch}
           tables={tables}
+          activeTable={activeTable}
+          setActiveTable={setActiveTable}
+          activeRelation={activeRelation}
         />
-        {/* <Sidemenu
-                selectedItem={selectedItem}
-                setSelectedItem={setSelectedItem}
-                tables={tables}
-                tableDispatch={tableDispatch}
-            /> */}
         <Canvas
           relations={relations}
           tables={tables}
           tableDispatch={tableDispatch}
           selectedItem={selectedItem}
           setSelectedItem={setSelectedItem}
+          activeTable={activeTable}
+          activeRelation={activeRelation}
+          setActiveRelation={setActiveRelation}
         />
       </div>
     </DndProvider>
