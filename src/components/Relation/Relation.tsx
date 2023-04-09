@@ -28,8 +28,6 @@ function Relation({
   useEffect(() => {
     const sourceColumn = document.getElementById(sourceColumnId.toString());
     const targetColumn = document.getElementById(targetColumnId.toString());
-    console.log(sourceColumn);
-
     if (sourceColumn != null && targetColumn != null) {
       const sourceColumnRect: DOMRect = sourceColumn.getBoundingClientRect();
       const targetColumnRect: DOMRect = targetColumn.getBoundingClientRect();
@@ -41,7 +39,6 @@ function Relation({
         targetX,
         targetY: targetY + targetColumnRect.height / 2
       };
-      console.log({ coordinate });
       setCoordinates(coordinate);
     }
   }, []);

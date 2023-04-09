@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { type TableData } from "../../Constants/Table";
 import Table from "../Table";
@@ -17,6 +17,7 @@ interface CanvasProps {
   activeTable: boolean;
   activeRelation: number;
   setActiveRelation: Dispatch<any>;
+  relationDispatch: Dispatch<any>;
 }
 function Canvas({
   tables,
@@ -24,12 +25,14 @@ function Canvas({
   relations,
   activeTable,
   activeRelation,
-  setActiveRelation
+  setActiveRelation,
+  relationDispatch
 }: CanvasProps): JSX.Element {
   const handleConvertToCode = async (e: any): Promise<void> => {
     const data: CRUDIFY_DATA = convertToCode(tables, relations);
     await convertToCodeFromCrudifyData(data);
   };
+  const [currentClicked, setCurrentClicked] = useState(undefined);
 
   return (
     <div
@@ -44,6 +47,9 @@ function Canvas({
             tableDispatch={tableDispatch}
             relations={relations}
             isActive={activeTable}
+            currentClicked={currentClicked}
+            setCurrentClicked={setCurrentClicked}
+            relationDispatch={relationDispatch}
           ></Table>
         );
       })}

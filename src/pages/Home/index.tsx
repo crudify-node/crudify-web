@@ -40,11 +40,20 @@ function Home(): JSX.Element {
       "click",
       function (e) {
         const cursor = (e.target as HTMLBodyElement)?.style.cursor;
-        console.log(cursor);
-        if (cursor === "") setActiveRelation(0);
+        if (cursor === "") {
+          setActiveRelation(0);
+          setActiveTable(false);
+        }
       },
       false
     );
+    const handleEsc = (event: any): void => {
+      if (event.keyCode === 27) {
+        setActiveRelation(0);
+        setActiveTable(false);
+      }
+    };
+    window.addEventListener("keydown", handleEsc);
   }, []);
   return (
     <DndProvider backend={HTML5Backend}>
@@ -67,6 +76,7 @@ function Home(): JSX.Element {
           activeTable={activeTable}
           activeRelation={activeRelation}
           setActiveRelation={setActiveRelation}
+          relationDispatch={relationDispatch}
         />
       </div>
     </DndProvider>

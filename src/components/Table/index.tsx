@@ -9,17 +9,24 @@ import Column from "./Column";
 import { type RelationData } from "../../Constants/Relation";
 import React from "react";
 import { datatype } from "../../enums/datatypes";
+import { findAllRelationsByTable } from "../../utils/relation";
 interface TableProps {
   data: TableData;
   tableDispatch: Dispatch<any>;
   relations: RelationData[];
+  relationDispatch: Dispatch<any>;
   isActive: boolean;
+  currentClicked: number | undefined;
+  setCurrentClicked: Dispatch<any>;
 }
 const Table = ({
   data,
   tableDispatch,
   relations,
-  isActive
+  isActive,
+  currentClicked,
+  relationDispatch,
+  setCurrentClicked
 }: TableProps): JSX.Element => {
   const table = useRef<HTMLInputElement | null>(null);
   useDragger(data, tableDispatch, relations);
@@ -39,6 +46,14 @@ const Table = ({
   const handleDeleteTable = (e: any): void => {
     e.preventDefault();
     tableDispatch({ type: ACTIONS.DELETE_TABLE, payload: data });
+    findAllRelationsByTable(relations, data).forEach((relation) => {
+      relationDispatch({
+        type: ACTIONS.DELETE_RELATION,
+        payload: {
+          id: relation.id
+        }
+      });
+    });
   };
   const handleEditTable = (data: TableData): void => {
     tableDispatch({ type: ACTIONS.EDIT_TABLE, payload: data });
@@ -98,6 +113,9 @@ const Table = ({
                 tableDispatch={tableDispatch}
                 relations={relations}
                 isActive={isActive}
+                currentClicked={currentClicked}
+                setCurrentClicked={setCurrentClicked}
+                relationDispatch={relationDispatch}
               />
             );
           })}

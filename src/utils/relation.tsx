@@ -6,7 +6,7 @@ export function newRelation(data: RelationData): RelationData {
   return data;
 }
 
-export function findRelationsByColumnId(
+export function findTargetRelationsByColumnId(
   relations: RelationData[],
   column: ColumnData
 ): RelationData[] {
@@ -14,6 +14,23 @@ export function findRelationsByColumnId(
   const columnId = column.id;
   for (const relation of relations) {
     if (relation.targetColumnId === columnId) {
+      relationData.push(relation);
+    }
+  }
+  return relationData;
+}
+
+export function findAllRelationsByColumnId(
+  relations: RelationData[],
+  column: ColumnData
+): RelationData[] {
+  const relationData: RelationData[] = [];
+  const columnId = column.id;
+  for (const relation of relations) {
+    if (
+      relation.targetColumnId === columnId ||
+      relation.sourceColumnId === columnId
+    ) {
       relationData.push(relation);
     }
   }
@@ -28,11 +45,36 @@ export function findTableDataByColumnId(
   return table;
 }
 
+export function findAllRelationsByTable(
+  relations: RelationData[],
+  table: TableData
+): RelationData[] {
+  const relationData: RelationData[] = [];
+  for (const column of table.data.column) {
+    const columnId = column.id;
+    for (const relation of relations) {
+      if (
+        relation.targetColumnId === columnId ||
+        relation.sourceColumnId === columnId
+      ) {
+        relationData.push(relation);
+      }
+    }
+  }
+  return relationData;
+}
+
+export function findRelationByRelationId(
+  relationId: number,
+  relations: RelationData[]
+): RelationData | undefined {
+  return relations.find((relation) => relation.id === relationId);
+}
+
 export function setRelationCoordinates(relation: RelationData): void {
   const { sourceColumnId, targetColumnId, id } = relation;
   const sourceColumn = document.getElementById(sourceColumnId.toString());
   const targetColumn = document.getElementById(targetColumnId.toString());
-  console.log(sourceColumn);
 
   if (sourceColumn != null && targetColumn != null) {
     const sourceColumnRect: DOMRect = sourceColumn.getBoundingClientRect();
