@@ -1,5 +1,5 @@
 import React, { type Dispatch, useEffect, useState } from "react";
-import { relations } from "../../enums/relations";
+import { relationsTypes } from "../../enums/relations";
 import { ACTIONS } from "../../reducers/actions";
 import { type RelationData } from "../../Constants/Relation";
 import { type TableData } from "../../Constants/Table";
@@ -20,7 +20,7 @@ const CreateRelation = ({
   const [selectedDestinationColumn, setSelectedDestinationColumn] = useState(
     tables[0]?.data.column[0]?.id
   );
-  const [selectedType, setSelectedType] = useState(relations.ONETOONE);
+  const [selectedType, setSelectedType] = useState(relationsTypes.ONETOONE);
   useEffect(() => {
     setSelectedTable(tables[0]);
     setSelectedDestinationTable(tables[0]);
@@ -172,7 +172,7 @@ const CreateRelation = ({
               setSelectedType(e.target.value);
             }}
           >
-            {Object.keys(relations).map((relation) => {
+            {Object.keys(relationsTypes).map((relation) => {
               return (
                 <option key={relation} value={relation}>
                   {relation}

@@ -7,7 +7,10 @@ import {
 import { type RelationData } from "../Constants/Relation";
 import { type TableData } from "../Constants/Table";
 import { datatype } from "../enums/datatypes";
-import { findRelationsByColumnId, findTableDataByColumnId } from "./relation";
+import {
+  findTargetRelationsByColumnId,
+  findTableDataByColumnId
+} from "./relation";
 import { findColumnByColumnId } from "./table";
 
 const getStaticFields = (TableData: TableData): CRUDIFY_STATIC_ATTRIBUTE[] => {
@@ -29,7 +32,7 @@ const getRelationalField = (
   const crudifyStaticField: CRUDIFY_RELATIONAL_ATTRIBUTE[] =
     TableData.data.column
       .map((column) => {
-        const relations = findRelationsByColumnId(RelationsData, column);
+        const relations = findTargetRelationsByColumnId(RelationsData, column);
         return relations.map((relation) => {
           const sourceColumn = findColumnByColumnId(
             tables,

@@ -1,4 +1,4 @@
-import { type Dispatch } from "react";
+import { useRef, type Dispatch } from "react";
 import useDragger from "../../hooks/useDragger";
 import addColumn from "../../assets/images/addColumn.svg";
 import deleteIcon from "../../assets/images/delete.svg";
@@ -9,12 +9,26 @@ import Column from "./Column";
 import { type RelationData } from "../../Constants/Relation";
 import React from "react";
 import { datatype } from "../../enums/datatypes";
+import { findAllRelationsByTable } from "../../utils/relation";
 interface TableProps {
   data: TableData;
   tableDispatch: Dispatch<any>;
   relations: RelationData[];
+  relationDispatch: Dispatch<any>;
+  isActive: boolean;
+  currentClicked: number | undefined;
+  setCurrentClicked: Dispatch<any>;
 }
-const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
+const Table = ({
+  data,
+  tableDispatch,
+  relations,
+  isActive,
+  currentClicked,
+  relationDispatch,
+  setCurrentClicked
+}: TableProps): JSX.Element => {
+  const table = useRef<HTMLInputElement | null>(null);
   useDragger(data, tableDispatch, relations);
   const handleCreateColumn = (e: any): void => {
     e.preventDefault();
@@ -32,6 +46,14 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
   const handleDeleteTable = (e: any): void => {
     e.preventDefault();
     tableDispatch({ type: ACTIONS.DELETE_TABLE, payload: data });
+    findAllRelationsByTable(relations, data).forEach((relation) => {
+      relationDispatch({
+        type: ACTIONS.DELETE_RELATION,
+        payload: {
+          id: relation.id
+        }
+      });
+    });
   };
   const handleEditTable = (data: TableData): void => {
     tableDispatch({ type: ACTIONS.EDIT_TABLE, payload: data });
@@ -39,9 +61,8 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
   return (
     <div
       id={data.id.toString()}
-      className="flex items-center justify-center absolute min-h-[50px] z-10 border-2 border-white border-solid mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-      // ref={drag}
-      // style={{border:isDragging?"5px solid pink":"0px", top:data.startY,left:data.startX}}
+      className="flex cursor-pointer items-center justify-center absolute min-h-[50px] z-10 border-2 border-white border-solid mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+      ref={table}
     >
       <div className="flex flex-col w-full">
         <div className="px-4 w-full flex justify-between bg-[#3b3b6b]">
@@ -91,6 +112,10 @@ const Table = ({ data, tableDispatch, relations }: TableProps): JSX.Element => {
                 column={column}
                 tableDispatch={tableDispatch}
                 relations={relations}
+                isActive={isActive}
+                currentClicked={currentClicked}
+                setCurrentClicked={setCurrentClicked}
+                relationDispatch={relationDispatch}
               />
             );
           })}

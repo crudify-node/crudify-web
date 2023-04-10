@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { type Dispatch, useEffect, useRef, useState } from "react";
 import type { RelationData } from "../../Constants/Relation";
 interface RelationProps {
   relation: RelationData;
+  activeRelation: number;
+  setActiveRelation: Dispatch<any>;
 }
 interface Coordinates {
   sourceX: number;
@@ -9,20 +11,23 @@ interface Coordinates {
   targetX: number;
   targetY: number;
 }
-function Relation({ relation }: RelationProps): JSX.Element {
+function Relation({
+  relation,
+  activeRelation,
+  setActiveRelation
+}: RelationProps): JSX.Element {
   const [coordinates, setCoordinates] = useState<Coordinates>({
     sourceX: 0,
     sourceY: 0,
     targetX: 0,
     targetY: 0
   });
+  const relationRef = useRef<SVGPolylineElement | null>(null);
   const { sourceColumnId, targetColumnId, id } = relation;
 
   useEffect(() => {
     const sourceColumn = document.getElementById(sourceColumnId.toString());
     const targetColumn = document.getElementById(targetColumnId.toString());
-    console.log(sourceColumn);
-
     if (sourceColumn != null && targetColumn != null) {
       const sourceColumnRect: DOMRect = sourceColumn.getBoundingClientRect();
       const targetColumnRect: DOMRect = targetColumn.getBoundingClientRect();
@@ -34,37 +39,47 @@ function Relation({ relation }: RelationProps): JSX.Element {
         targetX,
         targetY: targetY + targetColumnRect.height / 2
       };
-      console.log({ coordinate });
       setCoordinates(coordinate);
     }
   }, []);
+  const handleClickLine = (): void => {
+    setActiveRelation(id);
+  };
   return (
-    <svg
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        zIndex: "0"
-      }}
-    >
+    <>
       <polyline
         id={id.toString()}
         style={{
-          stroke: "rgba(255,255,0,0.5)",
+          stroke:
+            activeRelation !== id
+              ? "rgba(255,255,0,0.5)"
+              : "rgba(255,255,0,0.9)",
           strokeLinecap: "round",
-          strokeWidth: 3
+          strokeWidth: 5,
+          cursor: "pointer",
+          zIndex: "10"
         }}
+        ref={relationRef}
+        onClick={handleClickLine}
         points={
           coordinates.sourceX.toString() +
           " " +
           coordinates.sourceY.toString() +
+          "," +
+          ((coordinates.sourceX + coordinates.targetX) / 2).toString() +
+          " " +
+          coordinates.sourceY.toString() +
+          "," +
+          ((coordinates.sourceX + coordinates.targetX) / 2).toString() +
+          " " +
+          coordinates.targetY.toString() +
           "," +
           coordinates.targetX.toString() +
           " " +
           coordinates.targetY.toString()
         }
       />
-    </svg>
+    </>
   );
 }
 export default Relation;
