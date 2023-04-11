@@ -61,6 +61,7 @@ function Relation({
         }}
         ref={relationRef}
         onClick={handleClickLine}
+        fill="none"
         points={
           coordinates.sourceX.toString() +
           " " +

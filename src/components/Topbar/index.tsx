@@ -152,7 +152,7 @@ const Topbar = ({
             placeholder="Type of relation"
             style={{ cursor: "pointer" }}
             onChange={handleEditRelation}
-            defaultValue={typeOfRelation}
+            value={typeOfRelation}
           >
             {Object.keys(relationsTypes).map((relation) => {
               return (

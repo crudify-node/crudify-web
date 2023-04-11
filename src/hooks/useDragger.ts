@@ -85,7 +85,7 @@ function useDragger(
     };
 
     return cleanup;
-  }, [id]);
+  }, [table, relations]);
 }
 
 export default useDragger;
