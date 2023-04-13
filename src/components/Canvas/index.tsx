@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { type Dispatch, type SetStateAction } from "react";
 import { type TableData } from "../../Constants/Table";
 import Table from "../Table";
+import loading from "../../assets/images/loading-gif.gif";
 import createRelation from "../../assets/images/convertToCode.svg";
 import { type RelationData } from "../../Constants/Relation";
 import { convertToCode } from "../../utils/convertToCode";
@@ -30,10 +31,12 @@ function Canvas({
 }: CanvasProps): JSX.Element {
   const handleConvertToCode = async (e: any): Promise<void> => {
     const data: CRUDIFY_DATA = convertToCode(tables, relations);
+    setIsLoading(true);
     await convertToCodeFromCrudifyData(data);
+    setIsLoading(false);
   };
   const [currentClicked, setCurrentClicked] = useState(undefined);
-
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <div
       className="min-w-screen min-h-screen"
@@ -84,7 +87,11 @@ function Canvas({
         >
           <input type="text" className="inp-invisible h-0 w-0" />
           <div className="iconToolbar text-white rounded bg-[#6562b9] hover:bg-[#4F4D80]">
-            <img src={createRelation} alt="" className="h-4 w-4 " />
+            <img
+              src={isLoading ? loading : createRelation}
+              alt=""
+              className="h-4 w-4 "
+            />
           </div>
         </label>
       </div>
