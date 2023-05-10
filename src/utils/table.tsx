@@ -1,8 +1,17 @@
 import { type ColumnData } from "../Constants/Column";
 import type { RelationData } from "../Constants/Relation";
 import { type TableData } from "../Constants/Table";
+import { datatype } from "../enums/datatypes";
 
 export function newTable(data: TableData): TableData {
+  const column: ColumnData = {
+    id: Date.now(),
+    tableId: data.id,
+    data: { name: "id", type: datatype.INT },
+    isDelete: false
+  };
+  console.log({ column });
+  if (data.data.column.length === 0) data.data.column.push(column);
   return data;
 }
 export function findColumnByColumnId(

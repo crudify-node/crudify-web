@@ -110,17 +110,19 @@ const Column = ({
             </div>
           </div>
           <div className="flex">
-            <label
-              htmlFor=""
-              title="Delete Column"
-              className="labelInput rounded"
-              onClick={handleDeleteColumn}
-            >
-              <input type="text" className="inp-invisible" />
-              <div className="iconToolbar text-white">
-                <img src={deleteIcon} alt="" className="h-3 w-3 " />
-              </div>
-            </label>
+            {(column.isDelete === true || column.isDelete === undefined) && (
+              <label
+                htmlFor=""
+                title="Delete Column"
+                className="labelInput rounded"
+                onClick={handleDeleteColumn}
+              >
+                <input type="text" className="inp-invisible" />
+                <div className="iconToolbar text-white">
+                  <img src={deleteIcon} alt="" className="h-3 w-3 " />
+                </div>
+              </label>
+            )}
             {isActive && (
               <label
                 htmlFor=""

@@ -20,6 +20,10 @@ export function findTargetRelationsByColumnId(
   return relationData;
 }
 
+export function checkIfRelationEndColumn(): boolean {
+  return true;
+}
+
 export function findAllRelationsByColumnId(
   relations: RelationData[],
   column: ColumnData

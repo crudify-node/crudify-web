@@ -9,18 +9,26 @@ import { type TableData } from "../Constants/Table";
 import { datatype } from "../enums/datatypes";
 import {
   findTargetRelationsByColumnId,
-  findTableDataByColumnId
+  findTableDataByColumnId,
+  checkIfRelationEndColumn
 } from "./relation";
 import { findColumnByColumnId } from "./table";
 
 const getStaticFields = (TableData: TableData): CRUDIFY_STATIC_ATTRIBUTE[] => {
   const crudifyStaticField: CRUDIFY_STATIC_ATTRIBUTE[] =
-    TableData.data.column.map((column) => {
-      return {
-        name: column.data.name,
-        type: datatype[column.data.type.toUpperCase()]
-      };
-    });
+    TableData.data.column.reduce(function (
+      tables: CRUDIFY_STATIC_ATTRIBUTE[],
+      columnObj
+    ) {
+      if (columnObj.isDelete !== false && !checkIfRelationEndColumn()) {
+        tables.push({
+          name: columnObj.data.name,
+          type: datatype[columnObj.data.type.toUpperCase()]
+        });
+      }
+      return tables;
+    },
+    []);
   return crudifyStaticField;
 };
 

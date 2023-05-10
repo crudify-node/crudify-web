@@ -8,6 +8,7 @@ import { type RelationData } from "../../Constants/Relation";
 import { type TableData } from "../../Constants/Table";
 import { relationsTypes } from "../../enums/relations";
 import { findRelationByRelationId } from "../../utils/relation";
+// import { ColumnData } from "../../Constants/Column";
 
 interface TopbarProps {
   tableDispatch: Dispatch<any>;

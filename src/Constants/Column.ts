@@ -5,4 +5,5 @@ export interface ColumnData {
     name: string;
     type: string;
   };
+  isDelete?: boolean;
 }

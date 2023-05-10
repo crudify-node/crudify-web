@@ -3,7 +3,7 @@ export const BASE_URL = (): string => {
     case "LOCAL":
       return "http://localhost:5000/";
     case "DEVELOPMENT":
-      return "";
+      return "https://api-crudify-dev.onrender.com/";
     case "PRODUCTION":
       return "";
     case "default":

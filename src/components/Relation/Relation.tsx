@@ -1,5 +1,7 @@
 import React, { type Dispatch, useEffect, useRef, useState } from "react";
 import type { RelationData } from "../../Constants/Relation";
+// import { relationsTypes } from "../../enums/relations";
+
 interface RelationProps {
   relation: RelationData;
   activeRelation: number;
@@ -11,6 +13,54 @@ interface Coordinates {
   targetX: number;
   targetY: number;
 }
+// function renderType(param: string, coordinates: Coordinates): JSX.Element {
+//   switch (param) {
+//     case relationsTypes.ONETOMANY:
+//       return (
+//         <polyline
+//           style={{
+//             stroke: "rgba(255,255,0,0.9)",
+//             strokeLinecap: "round",
+//             strokeWidth: 5,
+//             cursor: "pointer",
+//             zIndex: "10"
+//           }}
+//           fill="none"
+//           points={
+//             (coordinates.targetX - 230).toString() +
+//             " " +
+//             coordinates.targetY.toString() +
+//             "," +
+//             (coordinates.targetX - 220).toString() +
+//             " " +
+//             (coordinates.targetY - 10).toString()
+//           }
+//         />
+//       );
+//     default:
+//       return (
+//         <polyline
+//           style={{
+//             stroke: "rgba(255,255,0,0.9)",
+//             strokeLinecap: "round",
+//             strokeWidth: 5,
+//             cursor: "pointer",
+//             zIndex: "10"
+//           }}
+//           fill="none"
+//           points={
+//             (coordinates.targetX - 230).toString() +
+//             " " +
+//             coordinates.targetY.toString() +
+//             "," +
+//             (coordinates.targetX - 220).toString() +
+//             " " +
+//             (coordinates.targetY - 10).toString()
+//           }
+//         />
+//       );
+//   }
+// }
 function Relation({
   relation,
   activeRelation,
@@ -80,6 +130,7 @@ function Relation({
           coordinates.targetY.toString()
         }
       />
+      {/* {renderType(data.type, coordinates)} */}
     </>
   );
 }
